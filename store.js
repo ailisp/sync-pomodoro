@@ -5,7 +5,20 @@ import { Map, List } from 'immutable'
 import { Platform } from 'react-native'
 import router from './router'
 
+export let timeOf = {
+  work: 3,
+  rest: 5,
+}
+
 const initialState = Map({
+  timer: Map({
+    startedAt: null,
+    started: false,
+    current: null,
+    status: 'work',
+    total: timeOf['work'],
+    remain: timeOf['work'],
+  }),
   text1: 'aaa',
   text2: 'bbb',
   path: Platform.OS == 'web' ? window.location.pathname : '/',
@@ -15,7 +28,7 @@ const { Provider } = store
 
 export const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
-    return events[action.type](state, action)
+    return events[action.type](state, action) || state
   }, initialState)
   return <Provider value={{ state, dispatch }}>{children}</Provider>
 }
