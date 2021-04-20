@@ -12,6 +12,7 @@ export let timeOf = {
 
 const initialState = Map({
   timer: Map({
+    finished: 0,
     startedAt: null,
     started: false,
     current: null,

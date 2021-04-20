@@ -1,5 +1,6 @@
 import { d, timeOf } from '../store'
 import { Platform } from 'react-native'
+import { play } from '../effects'
 
 export const toplevelEvent1 = (state, _args) => {
   return state.set('text2', 'ccc')
@@ -36,14 +37,20 @@ export const tick = (state, { timestamp }) => {
         .setIn(['timer', 'current'], current)
         .setIn(['timer', 'remain'], remain)
     } else {
-      status = state.getIn(['timer', 'status']) == 'work' ? 'rest' : 'work'
+      let finish = state.getIn(['timer', 'status'])
+      play(finish)
+      status = finish == 'work' ? 'rest' : 'work'
       remain = timeOf[status]
-      return state
+      let newState = state
         .setIn(['timer', 'current'], current)
         .setIn(['timer', 'remain'], remain)
         .setIn(['timer', 'status'], status)
         .setIn(['timer', 'total'], remain)
         .setIn(['timer', 'startedAt'], current)
+      if (finish == 'work') {
+        newState = newState.updateIn(['timer', 'finished'], (f) => f + 1)
+      }
+      return newState
     }
   }
 }
@@ -62,4 +69,28 @@ export const endTimer = (state, _) => {
       .setIn(['timer', 'startedAt'], null)
       .setIn(['timer', 'total'], state.getIn(['timer', 'remain']))
   }
+}
+export const resetTimer = (state, _) => {
+  if (state.getIn(['timer', 'started'])) {
+    return state
+      .setIn(['timer', 'startedAt'], new Date())
+      .setIn(['timer', 'remain'], timeOf[state.getIn(['timer', 'status'])])
+      .setIn(['timer', 'total'], timeOf[state.getIn(['timer', 'status'])])
+  } else {
+    return state
+      .setIn(['timer', 'total'], timeOf[state.getIn(['timer', 'status'])])
+      .setIn(['timer', 'remain'], timeOf[state.getIn(['timer', 'status'])])
+  }
+}
+export const nextTimer = (state, _) => {
+  let newState
+  if (state.getIn(['timer', 'status']) == 'work') {
+    newState = state
+      .updateIn(['timer', 'finished'], (f) => f + 1)
+      .setIn(['timer', 'status'], 'rest')
+  } else {
+    newState = state.setIn(['timer', 'status'], 'work')
+  }
+  newState = resetTimer(newState)
+  return newState
 }

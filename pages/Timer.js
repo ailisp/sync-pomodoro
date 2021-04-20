@@ -1,26 +1,33 @@
 import React, { useEffect } from 'react'
 import { StyleSheet, Button, View, Text } from 'react-native'
 import { d } from '../store'
-import { Audio } from 'expo-av'
 
 export default function TimerPage({ state }) {
   return (
     <Timer
       status={state.getIn(['timer', 'status'])}
       remain={state.getIn(['timer', 'remain'])}
+      finished={state.getIn(['timer', 'finished'])}
+      started={state.getIn(['timer', 'started'])}
     />
   )
 }
 
 setInterval(() => d('tick', { timestamp: new Date() }))
 
-function Timer({ status, remain }) {
+function Timer({ status, remain, finished, started }) {
   return (
     <View>
       <Text>{status}</Text>
       <Text>{formatTime(remain)}</Text>
-      <Button onPress={() => d('startTimer')} title="Start" />
-      <Button onPress={() => d('endTimer')} title="End" />
+      <Text>Finished: {finished}</Text>
+      {started ? (
+        <Button onPress={() => d('endTimer')} title="End" />
+      ) : (
+        <Button onPress={() => d('startTimer')} title="Start" />
+      )}
+      <Button onPress={() => d('resetTimer')} title="Reset" />
+      <Button onPress={() => d('nextTimer')} title="Next" />
     </View>
   )
 }
