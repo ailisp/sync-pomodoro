@@ -36,5 +36,5 @@ export async function play(kind) {
 }
 
 export async function broadcastState(state) {
-  socket.emit('setState', state.toJS())
+  socket.emit('setState', state.get('timer').toJS())
 }

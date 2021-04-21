@@ -70,7 +70,7 @@ export const startTimer = (s, _) => {
       'timer',
       state.get('timer').set('started', true).set('startedAt', new Date())
     )
-    broadcastState(state.timer)
+    broadcastState(state)
     return state
   }
 }
@@ -81,7 +81,7 @@ export const endTimer = (s, _) => {
       .setIn(['timer', 'started'], false)
       .setIn(['timer', 'startedAt'], null)
       .setIn(['timer', 'total'], state.getIn(['timer', 'remain']))
-    broadcastState(state.timer)
+    broadcastState(state)
     return state
   }
 }
@@ -99,7 +99,7 @@ function reset(state) {
 }
 export const resetTimer = (s, _) => {
   let state = reset(s)
-  broadcastState(state.timer)
+  broadcastState(state)
   return state
 }
 export const nextTimer = (state, _) => {
@@ -112,7 +112,7 @@ export const nextTimer = (state, _) => {
     newState = state.setIn(['timer', 'status'], 'work')
   }
   newState = reset(newState)
-  broadcastState(state.timer)
+  broadcastState(state)
   return newState
 }
 export const timerState = (state, timerState) => {
