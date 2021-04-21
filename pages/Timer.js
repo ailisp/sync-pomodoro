@@ -13,8 +13,6 @@ export default function TimerPage({ state }) {
   )
 }
 
-setInterval(() => d('tick', { timestamp: new Date() }))
-
 function Timer({ status, remain, finished, started }) {
   return (
     <View>

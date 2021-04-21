@@ -1,9 +1,10 @@
 // store.js
-import React, { createContext, useReducer, useContext } from 'react'
+import React, { createContext, useReducer, useContext, useEffect } from 'react'
 import * as events from './events'
 import { Map, List } from 'immutable'
 import { Platform } from 'react-native'
 import router from './router'
+import { init } from './effects'
 
 export let timeOf = {
   work: 3,
@@ -52,5 +53,9 @@ export function App_() {
     window.state = state
   }
   let Page = router(state.get('path'))
+
+  useEffect(() => {
+    init()
+  }, [])
   return <Page state={state} />
 }
