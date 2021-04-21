@@ -7,8 +7,8 @@ import router from './router'
 import { init } from './effects'
 
 export let timeOf = {
-  work: 3,
-  rest: 5,
+  work: 25 * 30,
+  rest: 5 * 30,
 }
 
 const initialState = Map({
@@ -19,7 +19,6 @@ const initialState = Map({
     current: null,
     status: 'work',
     total: timeOf['work'],
-    remain: timeOf['work'],
   }),
   text1: 'aaa',
   text2: 'bbb',

@@ -1,6 +1,7 @@
 import { d, timeOf } from '../store'
 import { Platform } from 'react-native'
 import { play, broadcastState } from '../effects'
+import { fromJS } from 'immutable'
 
 export const toplevelEvent1 = (state, _args) => {
   return state.set('text2', 'ccc')
@@ -36,23 +37,23 @@ export const tick = (state, { timestamp }) => {
   }
   if (newState.getIn(['timer', 'started'])) {
     let current = timestamp
-    let remain =
-      newState.getIn(['timer', 'total']) -
-      Math.floor((current - newState.getIn(['timer', 'startedAt'])) / 1000)
+    let remain = calcRemain(
+      newState.getIn(['timer', 'total']),
+      current,
+      newState.getIn(['timer', 'startedAt'])
+    )
+
     if (remain >= 0) {
-      return newState
-        .setIn(['timer', 'current'], current)
-        .setIn(['timer', 'remain'], remain)
+      return newState.setIn(['timer', 'current'], current)
     } else {
       let finish = newState.getIn(['timer', 'status'])
       play(finish)
       status = finish == 'work' ? 'rest' : 'work'
-      remain = timeOf[status]
+      let total = timeOf[status]
       newState = newState
         .setIn(['timer', 'current'], current)
-        .setIn(['timer', 'remain'], remain)
         .setIn(['timer', 'status'], status)
-        .setIn(['timer', 'total'], remain)
+        .setIn(['timer', 'total'], total)
         .setIn(['timer', 'startedAt'], current)
       if (finish == 'work') {
         newState = newState.updateIn(['timer', 'finished'], (f) => f + 1)
@@ -74,13 +75,26 @@ export const startTimer = (s, _) => {
     return state
   }
 }
+export function calcRemain(total, current, startedAt) {
+  return (
+    total -
+    (current && startedAt ? Math.floor((current - startedAt) / 1000) : 0)
+  )
+}
 export const endTimer = (s, _) => {
   let state = s
   if (state.getIn(['timer', 'started'])) {
     state = state
       .setIn(['timer', 'started'], false)
       .setIn(['timer', 'startedAt'], null)
-      .setIn(['timer', 'total'], state.getIn(['timer', 'remain']))
+      .setIn(
+        ['timer', 'total'],
+        calcRemain(
+          state.getIn(['timer', 'total']),
+          current,
+          state.getIn(['timer', 'startedAt'])
+        )
+      )
     broadcastState(state)
     return state
   }
@@ -89,12 +103,12 @@ function reset(state) {
   if (state.getIn(['timer', 'started'])) {
     return state
       .setIn(['timer', 'startedAt'], new Date())
-      .setIn(['timer', 'remain'], timeOf[state.getIn(['timer', 'status'])])
       .setIn(['timer', 'total'], timeOf[state.getIn(['timer', 'status'])])
   } else {
-    return state
-      .setIn(['timer', 'total'], timeOf[state.getIn(['timer', 'status'])])
-      .setIn(['timer', 'remain'], timeOf[state.getIn(['timer', 'status'])])
+    return state.setIn(
+      ['timer', 'total'],
+      timeOf[state.getIn(['timer', 'status'])]
+    )
   }
 }
 export const resetTimer = (s, _) => {
@@ -116,5 +130,6 @@ export const nextTimer = (state, _) => {
   return newState
 }
 export const timerState = (state, timerState) => {
-  return state.mergeDeep({ timer: timerState })
+  let timer = fromJS(timerState).delete('type')
+  return state.mergeDeep({ timer })
 }
