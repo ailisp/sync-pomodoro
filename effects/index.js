@@ -4,7 +4,7 @@ import socketIOClient from 'socket.io-client'
 import { d } from '../store'
 var accurateInterval = require('accurate-interval')
 
-const ENDPOINT = 'http://timer.carrymusic.club'
+const ENDPOINT = 'https://timer.carrymusic.club'
 const socket = socketIOClient(ENDPOINT)
 let workFinishSound
 let restFinishSound
