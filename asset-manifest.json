@@ -1,7 +1,7 @@
 {
   "files": {
-    "app.js": "/sync-pomodoro/static/js/app.3964b909.chunk.js",
-    "app.js.map": "/sync-pomodoro/static/js/app.3964b909.chunk.js.map",
+    "app.js": "/sync-pomodoro/static/js/app.c2957781.chunk.js",
+    "app.js.map": "/sync-pomodoro/static/js/app.c2957781.chunk.js.map",
     "runtime~app.js": "/sync-pomodoro/static/js/runtime~app.bc8a2815.js",
     "runtime~app.js.map": "/sync-pomodoro/static/js/runtime~app.bc8a2815.js.map",
     "static/js/2.6eab05c1.chunk.js": "/sync-pomodoro/static/js/2.6eab05c1.chunk.js",
@@ -31,6 +31,6 @@
   "entrypoints": [
     "static/js/runtime~app.bc8a2815.js",
     "static/js/2.6eab05c1.chunk.js",
-    "static/js/app.3964b909.chunk.js"
+    "static/js/app.c2957781.chunk.js"
   ]
 }
