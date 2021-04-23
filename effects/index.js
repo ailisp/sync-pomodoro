@@ -2,8 +2,9 @@ import { Audio } from 'expo-av'
 import { fromJS } from 'immutable'
 import socketIOClient from 'socket.io-client'
 import { d } from '../store'
+var accurateInterval = require('accurate-interval')
 
-const ENDPOINT = 'http://192.168.0.114:4000'
+const ENDPOINT = 'http://timer.carrymusic.club'
 const socket = socketIOClient(ENDPOINT)
 let workFinishSound
 let restFinishSound
@@ -13,8 +14,12 @@ export async function init() {
     console.log('on state')
     d('timerState', timerState)
   })
+
   socket.emit('getState')
-  setInterval(() => d('tick', { timestamp: new Date() }))
+  accurateInterval(() => d('tick', { timestamp: new Date() }), 1000, {
+    aligned: true,
+    immediate: true,
+  })
 }
 
 export async function play(kind) {
