@@ -1,0 +1,36 @@
+{
+  "files": {
+    "app.js": "/sync-pomodoro/static/js/app.3964b909.chunk.js",
+    "app.js.map": "/sync-pomodoro/static/js/app.3964b909.chunk.js.map",
+    "runtime~app.js": "/sync-pomodoro/static/js/runtime~app.bc8a2815.js",
+    "runtime~app.js.map": "/sync-pomodoro/static/js/runtime~app.bc8a2815.js.map",
+    "static/js/2.6eab05c1.chunk.js": "/sync-pomodoro/static/js/2.6eab05c1.chunk.js",
+    "static/js/2.6eab05c1.chunk.js.map": "/sync-pomodoro/static/js/2.6eab05c1.chunk.js.map",
+    "fonts/AntDesign.ttf": "/sync-pomodoro/./fonts/AntDesign.ttf",
+    "fonts/Entypo.ttf": "/sync-pomodoro/./fonts/Entypo.ttf",
+    "fonts/Feather.ttf": "/sync-pomodoro/./fonts/Feather.ttf",
+    "fonts/FontAwesome.ttf": "/sync-pomodoro/./fonts/FontAwesome.ttf",
+    "fonts/FontAwesome5_Brands.ttf": "/sync-pomodoro/./fonts/FontAwesome5_Brands.ttf",
+    "fonts/FontAwesome5_Solid.ttf": "/sync-pomodoro/./fonts/FontAwesome5_Solid.ttf",
+    "fonts/Fontisto.ttf": "/sync-pomodoro/./fonts/Fontisto.ttf",
+    "fonts/Foundation.ttf": "/sync-pomodoro/./fonts/Foundation.ttf",
+    "fonts/Ionicons.ttf": "/sync-pomodoro/./fonts/Ionicons.ttf",
+    "fonts/MaterialCommunityIcons.ttf": "/sync-pomodoro/./fonts/MaterialCommunityIcons.ttf",
+    "fonts/MaterialIcons.ttf": "/sync-pomodoro/./fonts/MaterialIcons.ttf",
+    "fonts/SimpleLineIcons.ttf": "/sync-pomodoro/./fonts/SimpleLineIcons.ttf",
+    "favicon-16.png": "/sync-pomodoro/favicon-16.png",
+    "favicon-32.png": "/sync-pomodoro/favicon-32.png",
+    "favicon.ico": "/sync-pomodoro/favicon.ico",
+    "index.html": "/sync-pomodoro/index.html",
+    "manifest.json": "/sync-pomodoro/manifest.json",
+    "serve.json": "/sync-pomodoro/serve.json",
+    "static/js/2.6eab05c1.chunk.js.LICENSE.txt": "/sync-pomodoro/static/js/2.6eab05c1.chunk.js.LICENSE.txt",
+    "static/media/rest.mp3": "/sync-pomodoro/static/media/rest.91e6c465.mp3",
+    "static/media/work.mp3": "/sync-pomodoro/static/media/work.fa89053c.mp3"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.bc8a2815.js",
+    "static/js/2.6eab05c1.chunk.js",
+    "static/js/app.3964b909.chunk.js"
+  ]
+}
