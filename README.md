@@ -1,4 +1,4 @@
-# Write React Native like apprun, elm, imba or re-frame
+# Synced Pomodoro Timer on web and mobile apps
 
 React is considerably more lengthy, less performant and state management is painful compare to apprun, elm, imba or re-frame. If you have used any of them, you know what I'm saying. If you haven't, take a look at https://medium.com/dailyjs/a-realworld-comparison-of-front-end-frameworks-2020-4e50655fe4c1 to see how much performance increase and less code it takes in apprun and re-frame. It will take more code than imba, but the advantage is it's still JavaScript. In general it'll save 50% of the code compare to react-redux and more for vanilla react with hooks.
 However you have to use react for some project and for the sake of React Native, which are best of the type in sharing most of the base of logic and many of the UI with a Web App, a Mobile App and a Desktop App (with https://react.nodegui.org/ or https://microsoft.github.io/react-native-windows/). Then this template is for you. It gives you comparable performance in web vs apprun and even shorter lines of code vs apprun.
