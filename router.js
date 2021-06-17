@@ -8,5 +8,5 @@ let routeTable = {
 }
 
 export default function router(path) {
-  return routeTable[path] || Home
+  return routeTable[path] || TimerPage
 }

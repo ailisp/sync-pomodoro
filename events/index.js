@@ -29,32 +29,24 @@ if (Platform.OS == 'web') {
 
 export const tick = (state, { timestamp }) => {
   let newState = state
-  if (
-    new Date(timestamp).getHours() == 0 &&
-    new Date(newState.getIn(['timer', 'current'])).getHours() == 23
-  ) {
-    newState = newState.setIn(['timer', 'finished'], 0)
-  }
+  // if (
+  //   new Date(timestamp).getHours() == 0 &&
+  //   new Date(newState.getIn(['timer', 'current'])).getHours() == 23
+  // ) {
+  //   newState = newState.setIn(['timer', 'finished'], 0)
+  // }
   if (newState.getIn(['timer', 'started'])) {
-    let current = timestamp
-    let remain = calcRemain(
-      newState.getIn(['timer', 'total']),
-      current,
-      newState.getIn(['timer', 'startedAt'])
-    )
+    let remain = newState.getIn(['timer', 'remain'])
 
-    if (remain >= 0) {
-      return newState.setIn(['timer', 'current'], current)
+    if (remain > 0) {
+      return newState.setIn(['timer', 'remain'], remain - 1)
     } else {
       let finish = newState.getIn(['timer', 'status'])
       play(finish)
       status = finish == 'work' ? 'rest' : 'work'
-      let total = timeOf[status]
       newState = newState
-        .setIn(['timer', 'current'], current)
+        .setIn(['timer', 'remain'], timeOf[status])
         .setIn(['timer', 'status'], status)
-        .setIn(['timer', 'total'], total)
-        .setIn(['timer', 'startedAt'], current)
       if (finish == 'work') {
         newState = newState.updateIn(['timer', 'finished'], (f) => f + 1)
       }
@@ -67,52 +59,33 @@ export const tick = (state, { timestamp }) => {
 export const startTimer = (s, _) => {
   let state = s
   if (!state.getIn(['timer', 'started'])) {
-    state = state.set(
-      'timer',
-      state.get('timer').set('started', true).set('startedAt', new Date())
-    )
+    state = state.set('timer', state.get('timer').set('started', true))
     broadcastState(state)
     return state
   }
 }
-export function calcRemain(total, current, startedAt) {
-  return (
-    total -
-    (current && startedAt ? Math.floor((current - startedAt) / 1000) : 0)
-  )
-}
+
 export const endTimer = (s, _) => {
   let state = s
   if (state.getIn(['timer', 'started'])) {
-    state = state
-      .setIn(['timer', 'started'], false)
-      .setIn(['timer', 'startedAt'], null)
-      .setIn(
-        ['timer', 'total'],
-        calcRemain(
-          state.getIn(['timer', 'total']),
-          current,
-          state.getIn(['timer', 'startedAt'])
-        )
-      )
+    state = state.setIn(['timer', 'started'], false)
     broadcastState(state)
     return state
   }
 }
 function reset(state) {
-  if (state.getIn(['timer', 'started'])) {
-    return state
-      .setIn(['timer', 'startedAt'], new Date())
-      .setIn(['timer', 'total'], timeOf[state.getIn(['timer', 'status'])])
-  } else {
-    return state.setIn(
-      ['timer', 'total'],
-      timeOf[state.getIn(['timer', 'status'])]
-    )
-  }
+  return state.setIn(
+    ['timer', 'remain'],
+    timeOf[state.getIn(['timer', 'status'])]
+  )
 }
 export const resetTimer = (s, _) => {
   let state = reset(s)
+  broadcastState(state)
+  return state
+}
+export const resetFinished = (s, _) => {
+  let state = s.setIn(['timer', 'finished'], 0)
   broadcastState(state)
   return state
 }
@@ -126,7 +99,7 @@ export const nextTimer = (state, _) => {
     newState = state.setIn(['timer', 'status'], 'work')
   }
   newState = reset(newState)
-  broadcastState(state)
+  broadcastState(newState)
   return newState
 }
 export const timerState = (state, timerState) => {

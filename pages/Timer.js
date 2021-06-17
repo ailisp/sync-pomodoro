@@ -1,34 +1,47 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, Button, View, Text } from 'react-native'
+import React from 'react'
+import { StyleSheet, View, Text, SafeAreaView } from 'react-native'
+import { Button, Icon } from 'native-base'
 import { d } from '../store'
-import { calcRemain } from '../events'
 
 export default function TimerPage({ state }) {
   return (
-    <Timer
-      status={state.getIn(['timer', 'status'])}
-      finished={state.getIn(['timer', 'finished'])}
-      started={state.getIn(['timer', 'started'])}
-      total={state.getIn(['timer', 'total'])}
-      startedAt={state.getIn(['timer', 'startedAt'])}
-      current={state.getIn(['timer', 'current'])}
-    />
+    <SafeAreaView style={styles.container}>
+      <Timer
+        status={state.getIn(['timer', 'status'])}
+        finished={state.getIn(['timer', 'finished'])}
+        started={state.getIn(['timer', 'started'])}
+        remain={state.getIn(['timer', 'remain'])}
+      />
+    </SafeAreaView>
   )
 }
 
-function Timer({ status, startedAt, current, total, finished, started }) {
+function Timer({ status, remain, finished, started }) {
   return (
     <View>
-      <Text>{status}</Text>
-      <Text>{formatTime(calcRemain(total, current, startedAt))}</Text>
-      <Text>Finished: {finished}</Text>
-      {started ? (
-        <Button onPress={() => d('endTimer')} title="End" />
-      ) : (
-        <Button onPress={() => d('startTimer')} title="Start" />
-      )}
-      <Button onPress={() => d('resetTimer')} title="Reset" />
-      <Button onPress={() => d('nextTimer')} title="Next" />
+      <Text style={styles.text}>{status}</Text>
+      <Text style={styles.text}>{formatTime(remain)}</Text>
+      <Text style={styles.text2}>Finished: {finished}</Text>
+      <View style={styles.buttons}>
+        {started ? (
+          <Button onPress={() => d('endTimer')} rounded>
+            <Icon name="controller-paus" type="Entypo" />
+          </Button>
+        ) : (
+          <Button onPress={() => d('startTimer')} rounded>
+            <Icon name="controller-play" type="Entypo" />
+          </Button>
+        )}
+        <Button onPress={() => d('resetTimer')} title="Reset" rounded>
+          <Icon name="controller-fast-backward" type="Entypo" />
+        </Button>
+        <Button onPress={() => d('nextTimer')} title="Next" rounded>
+          <Icon name="controller-fast-forward" type="Entypo" />
+        </Button>
+        <Button onPress={() => d('resetFinished')} title="Reset" rounded>
+          <Icon name="cw" type="Entypo" />
+        </Button>
+      </View>
     </View>
   )
 }
@@ -46,3 +59,31 @@ function formatTime(seconds) {
   }
   return m + ':' + s
 }
+
+const styles = StyleSheet.create({
+  text: {
+    fontSize: '40px',
+    color: '#1aabdb',
+  },
+  text2: {
+    fontSize: '36px',
+    color: '#00c9b7',
+  },
+  container: {
+    textAlign: 'center',
+    marginVertical: 8,
+    marginHorizontal: 8,
+    backgroundColor: '#dae4f2',
+    height: '100%',
+  },
+  button: {
+    color: '#ffffff',
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 300,
+    maxWidth: 300,
+    margin: 'auto',
+  },
+})
